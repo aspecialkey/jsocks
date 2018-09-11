@@ -139,7 +139,7 @@ class Socks5Message extends ProxyMessage {
 	 * 
 	 * @param in
 	 *            Input stream to read response from.
-	 * @param clinetMode
+	 * @param clientMode
 	 *            If true read server response, else read client request.
 	 * @throws SocksException
 	 *             If server response code is not SOCKS_SUCCESS(0) and reading
@@ -175,7 +175,7 @@ class Socks5Message extends ProxyMessage {
 	 * 
 	 * @param in
 	 *            Input stream to read response from.
-	 * @param clinetMode
+	 * @param clientMode
 	 *            If true read server response, else read client request.
 	 * @throws SocksException
 	 *             If server response code is not SOCKS_SUCCESS(0) and reading

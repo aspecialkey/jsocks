@@ -9,6 +9,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>ASCII</project.build.sourceEncoding>
+		<slf4jVersion>1.6.1</slf4jVersion>
 	</properties>
 
 
@@ -16,9 +17,24 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>1.5.11</version>
+			<version>${slf4jVersion}</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>${slf4jVersion}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.16</version>
+			<scope>runtime</scope>
+		</dependency>
+
 	</dependencies>
+
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 		<resources>
@@ -30,24 +46,53 @@
 			</resource>
 		</resources>
 		<plugins>
+
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.3.2</version>
+				<version>3.3</version>
 				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
+					<source>1.8</source>
+					<target>1.8 </target>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-pmd-plugin</artifactId>
-				<version>2.7.1</version>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-checkstyle-plugin</artifactId>
-				<version>2.9.1</version>
-			</plugin>
+
+
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-shade-plugin</artifactId>
+			<version>3.1.1</version>
+			<executions>
+				<execution>
+					<phase>package</phase>
+					<goals>
+						<goal>shade</goal>
+					</goals>
+					<configuration>
+						<transformers>
+							<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+								<manifestEntries>
+									<!--<addClasspath>true</addClasspath>-->
+									<!--<classpathPrefix>lib/</classpathPrefix>-->
+									<Main-Class>com.runjva.sourceforge.jsocks.main.SOCKS</Main-Class>
+								</manifestEntries>
+							</transformer>
+
+							<transformer implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
+								<resource>socks.properties</resource>
+								<file>socks.properties</file>
+							</transformer>
+
+						</transformers>
+
+
+						<artifactSet/>
+						<outputFile>${project.build.directory}/${project.artifactId}-${project.version}-fat.jar</outputFile>
+					</configuration>
+				</execution>
+			</executions>
+		</plugin>
+
 		</plugins>
+
 	</build>
 </project>
